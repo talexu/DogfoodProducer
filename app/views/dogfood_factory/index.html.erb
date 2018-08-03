@@ -4,23 +4,64 @@
         <span class="sr-only">60% Complete</span>
     </div>
 </div>
+<div class="flex">
+    <img src="shake.png" width="254" height="209" />
+</div>
+<div id="dogfoods">
+</div>
 
 <script>
+ var dogfoods = document.getElementById("dogfoods");
+ var dfs = [];
+ function dogfood() {
+     this.offset = 0;
+     var left = (Math.random() - 0.5) * (window.innerWidth / 2);
+     var scale = Math.min(0.8, Math.max(0.3, Math.random()));
+     var rotate = Math.random() * 360;
+     var df = document.createElement("img");
+     df.style.transformOrigin = "50% 50% 0";
+     df.style.transform = `translate3d(${left}px, ${this.offset}px, 0) scale3d(${scale}, ${scale}, 1) rotateZ(${rotate}deg)`;
+     df.onload = function(){
+         dogfoods.appendChild(df);
+     };
+     if (Math.random() > 0.5) {
+         df.src = "dogfood1.png";
+     } else {
+         df.src = "dogfood2.png";
+     }
+
+     this.update = () => {
+         this.offset += 7;
+         if (this.offset > window.innerHeight + 200) {
+             dfs = dfs.filter(dfRef => dfRef !== this);
+             dogfoods.removeChild(df);
+         }
+         df.style.transform = `translate3d(${left}px, ${this.offset}px, 0) scale3d(${scale}, ${scale}, 1) rotateZ(${rotate}deg)`;
+     };
+ }
+ function loop() {
+     for (var i = 0; i < dfs.length; i++) {
+         dfs[i].update();
+     }
+     requestAnimationFrame(loop);
+ }
+ requestAnimationFrame(loop);
  $(document).ready(function(){
      var progress = 0
      var myShakeEvent = new Shake({
          threshold: 1, // optional shake strength threshold
-         timeout: 100 // optional, determines the frequency of event generation
+         timeout: 500 // optional, determines the frequency of event generation
      });
      myShakeEvent.start();
      window.addEventListener(
          'shake',
          function() {
              $(".progress-bar").attr("aria-valuenow", progress).css("height", progress + "%");
-             progress += 1;
+             progress += 5;
              if (progress == 100) {
                  progress = 0;
              }
+             dfs.push(new dogfood());
          },
          false
      );
