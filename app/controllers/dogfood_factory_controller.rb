@@ -23,10 +23,10 @@ class DogfoodFactoryController < ApplicationController
 
   def increase
     if self.class.status == 'start'
-      self.class.progress = [100, self.class.progress + 10].min
+      self.class.progress = [1000, self.class.progress + 10].min
     end
 
-    if self.class.progress >= 100
+    if self.class.progress >= 1000
       self.class.status = 'success'
     end
 
@@ -43,7 +43,7 @@ class DogfoodFactoryController < ApplicationController
     render(
       json: {
         status: self.class.status,
-        progress: self.class.progress
+        progress: self.class.progress / 10
       }
     )
   end
