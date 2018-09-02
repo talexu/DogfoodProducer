@@ -6,10 +6,11 @@
         <img id="girl" class="df-girl" src="girl.png" width="auto" height="100%" />
     </div>
     <div class="flex">
-        <img src="shake.png" width="254" height="209" />
+        <img id="shake" src="shake.png" width="300" height="300" />
     </div>
     <div id="dogfoods">
     </div>
+    <div id="done" class="df-done" />
 </div>
 
 <script>
@@ -26,11 +27,6 @@
         _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
         _img.onload = () => { _animaPanel.appendChild(_img); }
          _img.src = "dogfood.png";
-         /* if (Math.random() > 0.5) { */
-         /* _img.src = "dogfood.png"; */
-         /* } else { */
-         /* _img.src = "dogfood.png"; */
-         /* } */
         var _update = () => {
             _offset += 7;
             if (_offset > window.innerHeight + Math.random() * 100) {
@@ -63,6 +59,7 @@
      var _status = "ready";
      var _progress = 0;
      var _pg = document.getElementById("pg");
+     var _done = $("#done")
      _pg.width = window.innerWidth * 142 / 648;
 
      var _progressBar = document.getElementById("pg-bar");
@@ -71,17 +68,20 @@
      var _boy = document.getElementById("boy");
      _boy.style.transformOrigin = "100% 50% 0";
 
-     // Animation loop
      function loop() {
          df.update();
          var _offset = (_progress - 100) * 0.7;
          _progressBar.style.transform = `translate3d(${_offset}%, 0px, 0)`;
          _boy.style.transform = `translate3d(${_offset}%, 0px, 0)`;
+         if (_progress >= 100) {
+             _done.fadeIn();
+         } else {
+             _done.fadeOut();
+         }
          requestAnimationFrame(loop);
      }
      requestAnimationFrame(loop);
 
-     // Shake detection
      var myShakeEvent = new Shake({
          threshold: 1, // optional shake strength threshold
          timeout: 500 // optional, determines the frequency of event generation

@@ -33,6 +33,17 @@ body, html {
     right: 0;
 }
 
+.df-done {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/done.gif");
+    background-size: cover;
+    display: none;
+}
+
 .progress-bar-vertical {
     width: 50%;
     min-height: 100%;
