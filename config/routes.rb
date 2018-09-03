@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/dogfood/admin', to: 'factory#admin'
   get '/healthies/check', to: 'application#health_check'
 end

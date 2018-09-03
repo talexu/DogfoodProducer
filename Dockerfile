@@ -17,3 +17,5 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5 \
 
 # Upload source
 COPY . ${APP_HOME}
+
+RUN RAILS_ENV=production bundle exec rake assets:precompile

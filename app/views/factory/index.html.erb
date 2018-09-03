@@ -14,87 +14,95 @@
 </div>
 
 <script>
- var df = (() => {
-     var _animaPanel = document.getElementById("dogfoods");
-     var _dogfoods = [];
-     var _dogfood = function dogfood() {
-        var _offset = 0;
-        var _left = (Math.random() - 0.5) * (window.innerWidth / 1.5);
-        var _scale = Math.min(0.9, Math.max(0.5, Math.random()));
-        var _rotate = Math.random() * 360;
-        var _img = document.createElement("img");
-        _img.style.transformOrigin = "50% 50% 0";
-        _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
-        _img.onload = () => { _animaPanel.appendChild(_img); }
-         _img.src = "http://qiniucloudfront.veervr.tv/dogfood/dogfood.png";
-        var _update = () => {
-            _offset += 7;
-            if (_offset > window.innerHeight + Math.random() * 100) {
-                _update = () => { return }
-            } else {
-                _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
+    var df = (() => {
+        var _animaPanel = document.getElementById("dogfoods");
+        var _dogfoods = [];
+        var _dogfood = function dogfood() {
+            var _offset = 0;
+            var _left = (Math.random() - 0.5) * (window.innerWidth / 1.5);
+            var _scale = Math.min(0.9, Math.max(0.5, Math.random()));
+            var _rotate = Math.random() * 360;
+            var _img = document.createElement("img");
+            _img.style.transformOrigin = "50% 50% 0";
+            _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
+            _img.onload = () => {
+                _animaPanel.appendChild(_img);
             }
+            _img.src = "http://qiniucloudfront.veervr.tv/dogfood/dogfood.png";
+            var _update = () => {
+                _offset += 7;
+                if (_offset > window.innerHeight + Math.random() * 100) {
+                    _update = () => {
+                        return
+                    }
+                } else {
+                    _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
+                }
+            }
+
+            return {
+                update: () => {
+                    _update();
+                }
+            };
         }
 
         return {
-            update: () => { _update(); }
-        };
-    }
+            appendDogfood: () => {
+                _dogfoods.push(new _dogfood());
+            },
+            update: () => {
+                for (var i = 0; i < _dogfoods.length; i++) {
+                    _dogfoods[i].update();
+                }
+            }
+        }
+    })();
 
-     return {
-         appendDogfood: () => {
-             _dogfoods.push(new _dogfood());
-         },
-         update: () => {
-             for (var i = 0; i < _dogfoods.length; i++) {
-                 _dogfoods[i].update();
-             }
-         }
-     }
- })();
+    $(document).ready(() => {
+        var _progress = 0;
+        var _pg = document.getElementById("pg");
+        _pg.width = window.innerWidth * 142 / 648;
+        var _done = $("#done")
+        var _progressBar = document.getElementById("pg-bar");
+        _progressBar.style.transformOrigin = "0% 50% 0";
+        var _boy = document.getElementById("boy");
+        _boy.style.transformOrigin = "100% 50% 0";
 
- $(document).ready(() => {
-     var _progress = 0;
-     var _pg = document.getElementById("pg");
-     _pg.width = window.innerWidth * 142 / 648;
-     var _done = $("#done")
-     var _progressBar = document.getElementById("pg-bar");
-     _progressBar.style.transformOrigin = "0% 50% 0";
-     var _boy = document.getElementById("boy");
-     _boy.style.transformOrigin = "100% 50% 0";
+        function loop() {
+            df.update();
+            var _offset = (_progress - 100) * 0.7;
+            _progressBar.style.transform = `translate3d(${_offset}%, 0px, 0)`;
+            _boy.style.transform = `translate3d(${_offset}%, 0px, 0)`;
+            if (_progress >= 100) {
+                _done.fadeIn();
+            } else {
+                _done.fadeOut();
+            }
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
 
-     function loop() {
-         df.update();
-         var _offset = (_progress - 100) * 0.7;
-         _progressBar.style.transform = `translate3d(${_offset}%, 0px, 0)`;
-         _boy.style.transform = `translate3d(${_offset}%, 0px, 0)`;
-         if (_progress >= 100) {
-             _done.fadeIn();
-         } else {
-             _done.fadeOut();
-         }
-         requestAnimationFrame(loop);
-     }
-     requestAnimationFrame(loop);
+        var myShakeEvent = new Shake({
+            threshold: 1, // optional shake strength threshold
+            timeout: 500 // optional, determines the frequency of event generation
+        });
+        myShakeEvent.start();
+        window.addEventListener(
+            'shake',
+            () => {
+                df.appendDogfood();
+                $.post("/dogfood/factory/increase", {
+                    times: <%= @times %>
+                });
+            },
+            false
+        );
 
-     var myShakeEvent = new Shake({
-         threshold: 1, // optional shake strength threshold
-         timeout: 500 // optional, determines the frequency of event generation
-     });
-     myShakeEvent.start();
-     window.addEventListener(
-         'shake',
-         () => {
-             df.appendDogfood();
-             $.post("/dogfood/factory/increase");
-         },
-         false
-     );
-
-     window.setInterval(() => {
-         $.getJSON("/dogfood/factory/status", (data) => {
-             _progress = data.progress;
-         });
-     }, 500);
- });
+        window.setInterval(() => {
+            $.getJSON("/dogfood/factory/status", (data) => {
+                _progress = data.progress;
+            });
+        }, 500);
+    });
 </script>

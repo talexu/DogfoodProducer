@@ -1,0 +1,27 @@
+<div>
+    <button id="reset" type="button" class="btn btn-primary btn-lg btn-block">Reset</button>
+    <button id="start" type="button" class="btn btn-success btn-lg btn-block">Start</button>
+    <a id="x20" class="btn btn-danger btn-lg btn-block" target="_blank" href="<%= factory_index_url(times: 20) %>">X20</a>
+</div>
+
+<script>
+ $(document).ready(() => {
+     $("#reset").click(function() {
+         $.ajax({
+             method: "PUT",
+             url: "/dogfood/factory/reset"
+         }).done(function(data) {
+             alert(data.progress);
+         });
+     });
+
+     $("#start").click(function() {
+         $.ajax({
+             method: "PUT",
+             url: "/dogfood/factory/start"
+         }).done(function(data) {
+             alert(data.progress);
+         });
+     });
+ });
+</script>
