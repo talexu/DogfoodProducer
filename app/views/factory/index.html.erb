@@ -1,12 +1,12 @@
 <div class="df-bg">
     <div id="pg" class="d-flex justify-content-center df-progress-container">
-        <img id="pg-bar" src="progress-bar.png" width="100%" height="100%" />
-        <img src="progress-bar-container.png" class="df-progress-bar" width="100%" height="100%" />
-        <img id="boy" class="df-boy" src="boy.png" width="auto" height="100%" />
-        <img id="girl" class="df-girl" src="girl.png" width="auto" height="100%" />
+        <img id="pg-bar" src="http://qiniucloudfront.veervr.tv/dogfood/progress-bar.png" width="100%" height="100%" />
+        <img src="http://qiniucloudfront.veervr.tv/dogfood/progress-bar-container.png" class="df-progress-bar" width="100%" height="100%" />
+        <img id="boy" class="df-boy" src="http://qiniucloudfront.veervr.tv/dogfood/boy.png" width="auto" height="100%" />
+        <img id="girl" class="df-girl" src="http://qiniucloudfront.veervr.tv/dogfood/girl.png" width="auto" height="100%" />
     </div>
     <div class="flex">
-        <img id="shake" src="shake.png" width="300" height="300" />
+        <img id="shake" src="http://qiniucloudfront.veervr.tv/dogfood/shake.png" width="300" height="300" />
     </div>
     <div id="dogfoods">
     </div>
@@ -26,7 +26,7 @@
         _img.style.transformOrigin = "50% 50% 0";
         _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
         _img.onload = () => { _animaPanel.appendChild(_img); }
-         _img.src = "dogfood.png";
+         _img.src = "http://qiniucloudfront.veervr.tv/dogfood/dogfood.png";
         var _update = () => {
             _offset += 7;
             if (_offset > window.innerHeight + Math.random() * 100) {
@@ -56,7 +56,6 @@
  })();
 
  $(document).ready(() => {
-     var _status = "ready";
      var _progress = 0;
      var _pg = document.getElementById("pg");
      var _done = $("#done")
@@ -91,22 +90,21 @@
          'shake',
          () => {
              df.appendDogfood();
-             $.post("/dogfood_factory/increase");
+             $.post("/dogfood/factory/increase");
          },
          false
      );
 
      // Polling
      window.setInterval(() => {
-         $.getJSON("/dogfood_factory/status", (data) => {
-             _status = data.data;
+         $.getJSON("/dogfood/factory/status", (data) => {
              _progress = data.progress;
          });
      }, 500);
 
      $("#dogfoods").click(()=>{
          df.appendDogfood();
-         $.post("/dogfood_factory/increase");
+         $.post("/dogfood/factory/increase");
      });
  });
 </script>

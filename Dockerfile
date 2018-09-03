@@ -1,6 +1,9 @@
 FROM ruby:2.5.1
 MAINTAINER Xu Yunlong <yunlong@veer.tv>
 
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends nodejs
+
 # Install gems
 ENV APP_HOME /opt/vcam/dogfood_producer/current
 RUN mkdir -p ${APP_HOME}
