@@ -30,8 +30,6 @@
         var _update = () => {
             _offset += 7;
             if (_offset > window.innerHeight + Math.random() * 100) {
-                /* _dogfoods = _dogfoods.filter(df => df !== this); */
-                /* _animaPanel.removeChild(_img); */
                 _update = () => { return }
             } else {
                 _img.style.transform = `translate3d(${_left}px, ${_offset}px, 0) scale3d(${_scale}, ${_scale}, 1) rotateZ(${_rotate}deg)`;
@@ -58,12 +56,10 @@
  $(document).ready(() => {
      var _progress = 0;
      var _pg = document.getElementById("pg");
-     var _done = $("#done")
      _pg.width = window.innerWidth * 142 / 648;
-
+     var _done = $("#done")
      var _progressBar = document.getElementById("pg-bar");
      _progressBar.style.transformOrigin = "0% 50% 0";
-
      var _boy = document.getElementById("boy");
      _boy.style.transformOrigin = "100% 50% 0";
 
@@ -95,16 +91,10 @@
          false
      );
 
-     // Polling
      window.setInterval(() => {
          $.getJSON("/dogfood/factory/status", (data) => {
              _progress = data.progress;
          });
      }, 500);
-
-     $("#dogfoods").click(()=>{
-         df.appendDogfood();
-         $.post("/dogfood/factory/increase");
-     });
  });
 </script>
