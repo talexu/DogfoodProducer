@@ -40,7 +40,7 @@ class FactoryController < ApplicationController
   end
 
   def prepare
-    @multiplying = 20
+    @multiplying = 50
     load_progress
   end
 
