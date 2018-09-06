@@ -18,4 +18,5 @@ RUN gem install bundler && bundle install --jobs 20 --retry 5 \
 # Upload source
 COPY . ${APP_HOME}
 
+ENV SECRET_KEY_BASE d972af1231978d7b0c9e6ed2c0d06006367449a27d2a14b4c7e1874b81864fe0a47108045adb15e4044678131f705803cd7465f67e948f25d9b7b262ecdb9806
 RUN RAILS_ENV=production bundle exec rake assets:precompile
