@@ -50,7 +50,7 @@ class FactoryController < ApplicationController
   def load_progress
     @prog = Rails.application.config.redis.get('dogfood_progress')
     if @prog.nil?
-      @prog = -1
+      @prog = 0
       Rails.application.config.redis.set('dogfood_progress', 0)
     else
       @prog = @prog.to_i
