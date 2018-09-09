@@ -93,9 +93,7 @@
             'shake',
             () => {
                 df.appendDogfood();
-                $.post("/dogfood/factory/increase", {
-                    times: <%= @times %>
-                });
+                $.post("/dogfood/factory/increase");
             },
             false
         );

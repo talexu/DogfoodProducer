@@ -13,5 +13,5 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
-Rails.application.config.assets.precompile += %w( shake.js )
+Rails.application.config.assets.precompile += %w[shake.js bootstrap-slider.js bootstrap-slider.css]
 Rails.application.config.assets.prefix = '/dogfood/assets'

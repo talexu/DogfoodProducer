@@ -1,9 +1,7 @@
 class FactoryController < ApplicationController
   before_action :prepare
 
-  def index
-    @times = (params[:times] || 1).to_i
-  end
+  def index; end
 
   def admin; end
 
@@ -18,6 +16,11 @@ class FactoryController < ApplicationController
   end
 
   def increase
+    Rails.application.config.redis.incr('dogfood_progress') if @prog >= 0
+    render_status
+  end
+
+  def jump
     (params[:times] || 1).to_i.times do
       Rails.application.config.redis.incr('dogfood_progress') if @prog >= 0
     end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         put :reset
         put :start
         post :increase
+        post :jump
         get :status
       end
     end

@@ -1,11 +1,20 @@
 <div>
+    <div class="progress">
+        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
     <button id="reset" type="button" class="btn btn-primary btn-lg btn-block">Reset</button>
     <button id="start" type="button" class="btn btn-success btn-lg btn-block">Start</button>
-    <a id="x20" class="btn btn-danger btn-lg btn-block" target="_blank" href="<%= factory_index_url(times: 20) %>">X20</a>
+    <div style="margin: 30px">
+        <input id="sl-times" data-slider-id='times-lider' type="text" data-slider-min="20" data-slider-max="100" data-slider-step="1" data-slider-value="20"/>
+        <span>倍率: <span id="times-slider-val">20</span></span>
+    </div>
+    <button id="increase" type="button" class="btn btn-primary btn-lg btn-block">Shake</button>
 </div>
 
 <script>
  $(document).ready(() => {
+     var _times = 20;
+     var _progress = 0;
      $("#reset").click(function() {
          $.ajax({
              method: "PUT",
@@ -21,6 +30,24 @@
              url: "/dogfood/factory/start"
          }).done(function(data) {
              alert(data.progress);
+         });
+     });
+
+     $('#sl-times').slider().on("slide", function(slideEvt) {
+         _times = slideEvt.value;
+	       $("#times-slider-val").text(slideEvt.value);
+     });
+
+     window.setInterval(() => {
+         $.getJSON("/dogfood/factory/status", (data) => {
+             _progress = data.progress;
+             $(".progress-bar").attr("aria-valuenow", _progress).css("width", _progress + "%");
+         });
+     }, 500);
+
+     $("#increase").click(function(){
+         $.post("/dogfood/factory/jump", {
+             times: _times
          });
      });
  });
