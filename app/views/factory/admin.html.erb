@@ -5,15 +5,15 @@
     <button id="reset" type="button" class="btn btn-primary btn-lg btn-block">Reset</button>
     <button id="start" type="button" class="btn btn-success btn-lg btn-block">Start</button>
     <div style="margin: 30px">
-        <input id="sl-times" data-slider-id='times-lider' type="text" data-slider-min="20" data-slider-max="100" data-slider-step="1" data-slider-value="20"/>
-        <span>倍率: <span id="times-slider-val">20</span></span>
+        <input id="sl-times" data-slider-id='times-lider' type="text" data-slider-min="20" data-slider-max="100" data-slider-step="1" data-slider-value="30"/>
+        <span>倍率: <span id="times-slider-val">30</span></span>
     </div>
     <button id="increase" type="button" class="btn btn-primary btn-lg btn-block">Shake</button>
 </div>
 
 <script>
  $(document).ready(() => {
-     var _times = 20;
+     var _times = 30;
      var _progress = 0;
      $("#reset").click(function() {
          $.ajax({
